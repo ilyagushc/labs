@@ -20,7 +20,9 @@ int main()
 
 	{
 		std::cout << "Задание 1\n";
-		std::cout << "My name is\"Vasya\"" << std::endl;
+        std::cout << "My name is\"Dyadya Vasya\"" << std::endl;
+        std::cout << R"(My name is "Dyadya Vasya")" << std::endl;
+        std::cout << R"***(My name is "Dyadya Vasya")***" << std::endl;
         //__asm nop
 	}
 
