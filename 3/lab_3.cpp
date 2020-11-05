@@ -7,6 +7,8 @@
 #include <memory>
 #include <vector>
 
+#include "lab_3.h"
+
 using namespace std;
 
 int main()
@@ -19,7 +21,7 @@ int main()
 	//в) добавьте разделители (Delimeter)
 
 	{
-		std::cout << "Задание 1\n";
+        std::cout << "----------------------- [1] ------------------------\n";
         std::cout << "My name is\"Dyadya Vasya\"" << std::endl;
         std::cout << R"(My name is "Dyadya Vasya")" << std::endl;
         std::cout << R"***(My name is "Dyadya Vasya")***" << std::endl;
@@ -41,20 +43,24 @@ int main()
 	//				Для проверки достаточно создать встроенный массив с размерностью, вычисляемой
 	//				посредством constexpr-функции:
 
-	{	//Например:
-		//int ar[factorial(3)];
+    {
+        std::cout << "----------------------- [2] ------------------------\n";
+
+        //Например:
+        int ar[factorial(3)];
+        cout << factorial(4) << endl;
 
 		//или
-		//constexpr int n = factorial(5);
-		//int ar1[n];
+        constexpr int n = factorial(5);
+        int ar1[n];
 
 		//попробуйте:
-		//int m = 7;
-		//constexpr int n1 = factorial(m);
-		//int ar1[n1];
+        int m = 7;
+        //constexpr int n1 = factorial(m); //error (must be constexpr)
+        //int ar2[n1];
 		
 		//а так?
-		//int n2 = factorial(m);
+        int n2 = factorial(m);
         //__asm nop
 	}
 	
