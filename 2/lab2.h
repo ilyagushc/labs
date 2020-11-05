@@ -101,7 +101,80 @@ private:
 };
 
 
+//----------------------------- [2] -----------------------------
+template <class T>
+class MyQueue{
+public:
+    MyQueue(){
+        _data = new T[_n];
+    }
 
+    MyQueue(const std::initializer_list<T>& list){
+        _size = list.size();
+        if(_n < _size){
+            _n = _size;
+        }
+        _data = new T[_n];
+        for(const auto& i : list){
+            push(*new T(i));
+        }
+    }
+
+    void push(const T& e){
+        //кладем в конец
+        *_last = e;
+        _last++;
+        _size++;
+
+        if(_last == _data + _n-1){
+            _last = _data;
+        }
+        if(_last == _first){
+            //догнали голову перераспределение памяти
+            int newN = _n*2;
+            T* newData = new T[newN];
+            T* cur = _first;
+            T* newCur = newData;
+
+            //копируем элементы
+            while(cur != _last){
+                newCur = cur;
+                cur++;
+                if(cur == _data+_n){
+                    cur = _data;
+                }
+            }
+
+        }
+    }
+
+    T pop(){
+        if(_first == nullptr || _first == _last){
+            //нет элементов
+            return T();
+        }
+
+        //берем эелемент из начала
+        T res = *_first;
+
+        //двигаем указатель вперед
+        _first++;
+
+        //если пришли к концу - перешагиваем в начало
+        if(_first == _data + _n){
+            _first = _data;
+        }
+
+        return res;
+    }
+
+private:
+    int _n{10};
+    int _size;
+    T* _data;
+    T* _first{nullptr};
+    T* _last{nullptr};
+};
 
 
 #endif // LAB2_H
