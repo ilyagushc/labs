@@ -45,6 +45,7 @@ std::string operator-(const std::string& s) {
 }
 
 
+
 int main()
 {	
 
@@ -416,7 +417,8 @@ int main()
                 cnt++;
             }
         });
-        std::cout << "cnt: " << cnt;
+        std::cout << "string: " << s << std::endl;
+        std::cout << "cnt: " << cnt << std::endl;
 
 		
         //__asm nop
@@ -464,19 +466,21 @@ template<typename T> struct EnumMap
 
 	{
 	//Например:
-/*
-		COLORS c1;
-		try {
-			c1 = stringToEnum<COLORS>("blue");
-		}
-		catch (...)
-		{
-		//...
-		}
 
-	
-		auto Str = enumToString(c1);
-*/
+        COLORS c1;
+
+        try {
+            //c1 = stringToEnum<COLORS>("blue");
+            c1 = stringToEnum<COLORS>("Black");
+        }
+        catch (const std::exception& e)
+        {
+            std::cout << e.what();
+        }
+        std::cout << "c1: " << (int)c1 << std::endl;
+        auto str = enumToString<COLORS>(c1);
+        std::cout << "enumToString: " << str << std::endl;
+
 
         //__asm nop
 	}

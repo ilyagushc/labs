@@ -43,3 +43,55 @@ auto SumCont(const T1& c1, const T2& c2)
     }
 };
 
+//------------------------------ 10 --------------------------------------
+template<typename T>
+struct EnumMap
+{
+    static std::map<std::string, T> _map;
+    static const auto& getMap() { return _map; }
+};
+
+
+class StringToEnumException : public std::exception{
+public:
+    const char* what() const noexcept override{
+        return "bad string for enum";
+    }
+};
+
+
+template<class T>
+T stringToEnum(const std::string& s)
+{
+    auto& m = EnumMap<T>::_map;
+    if(m.find(s) != m.end()){
+        return m[s];
+    }
+    throw StringToEnumException();
+}
+
+template<class T>
+std::string enumToString(const T& e){
+    for(const auto& [key, val] : EnumMap<T>::_map){
+        if(val == e){
+            return key;
+        }
+    }
+    return std::string("");
+}
+
+enum class COLORS{White, Red, Black, Yellow};
+
+
+template<>
+std::map<std::string, COLORS> EnumMap<COLORS>::_map
+{
+    {"White",   COLORS::White},
+    {"Red",     COLORS::Red},
+    {"Black",   COLORS::Black},
+    {"Yellow",  COLORS::Yellow}
+};
+
+
+
+
