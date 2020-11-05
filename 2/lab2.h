@@ -1,6 +1,4 @@
-#ifndef LAB2_H
-#define LAB2_H
-
+#pragma once
 
 #include <iostream>
 #include <algorithm>
@@ -177,4 +175,75 @@ private:
 };
 
 
-#endif // LAB2_H
+
+//----------------------------- [3] -----------------------------
+
+template <class T>
+class MyUniquePTR
+{
+public:
+    MyUniquePTR(T *p){
+        _data = p;
+    }
+    MyUniquePTR(T&& p){
+        _data = p->get();
+        p->reset();
+    }
+    MyUniquePTR& operator=(MyUniquePTR&& other){
+        if(_data == other._data){
+            other.reset();
+            return *this;
+        }
+        if(other._data){
+            if(_data){
+                delete _data;
+            }
+            _data = other._data;
+            other.reset();
+        }
+    }
+    ~MyUniquePTR(){
+        if(_data){
+            delete _data;
+        }
+    }
+
+    T* operator->(){
+        return _data;
+    }
+
+    T& operator*(){
+        if(_data){
+            return *_data;
+        }
+        throw std::exception();
+    }
+    operator bool() const{
+        return _data;
+    }
+    T* get(){
+        return _data;
+    }
+    void reset(T* p = nullptr){
+        if(p){
+            if(_data){
+                delete _data;
+            }
+            _data = p;
+            return;
+        }
+
+        if(_data){
+            delete _data;
+            _data = nullptr;
+        }
+    }
+
+
+
+    MyUniquePTR(const MyUniquePTR& other) = delete;
+    MyUniquePTR operator=(const MyUniquePTR& other) = delete;
+
+private:
+    T* _data{nullptr};
+};

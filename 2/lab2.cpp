@@ -1,5 +1,7 @@
 #include <vector>
 #include <iostream>
+#include <list>
+#include <iterator>
 
 #include "lab2.h"
 int main()
@@ -83,21 +85,54 @@ initializer_list, move, forward, default, delete, move итераторы
 //Задание 3. Реализуйте шаблон класса MyUniquePTR, который является оберткой для указателя на объект любого типа.
 //Задача – класс должен обеспечивать единоличное владение динамически создаваемым объектом. Проверить функционирование шаблона на примере MyString:
 {
-        std::cout << "---------- [3] ----------\n";
-/*
-MyUniquePTR<MyString> p1(new MyString (“abc”));
-std:: cout<<p1->GetString();
-p1->SetNewString(“qwerty”);
-MyString  s2 = *p1;
-//MyUniquePTR< MyString > p2=p1; //здесь компилятор должен выдавать ошибку => 
-Исправьте!
-If(p1) {std::cout<<”No object!”} //а это должно работать
-MyUniquePTR< MyString > p3(new MyString (“vvv”));
-//p3 = p2; //и здесь компилятор должен выдавать ошибку
-vector< MyUniquePTR< MyString >> v; //как проинициализировать???
-list< MyUniquePTR< MyString >> l;
-//как скопировать из v в l ???
-*/
+    std::cout << "---------- [3] ----------\n";
+
+    using MyString = std::string;
+
+    MyUniquePTR<MyString> p1(new MyString ("abc"));
+    //std::cout << p1->GetString();
+    std::cout << p1->c_str() << std::endl;
+
+    //p1->SetNewString(“qwerty”);
+    *p1 = std::string("qwerty");
+    std::cout << *p1 << "\n";
+
+    MyString  s2 = *p1;
+
+    //error!!!
+    //MyUniquePTR< MyString > p2=p1; //здесь компилятор должен выдавать ошибку =>
+
+    //Исправьте!
+    if(p1) {
+        std::cout << "No object!\n";    //а это должно работать
+    }
+    else{
+        std::cout << "p1 not null object!\n";
+    }
+
+    ///TODO: рабочий перемещающий конструктор и = !!!
+
+
+
+    MyUniquePTR< MyString > p2(new MyString ("vvv"));
+    //p2 = p1; //и здесь компилятор должен выдавать ошибку
+    std::vector< MyUniquePTR< MyString >> v{
+        MyUniquePTR<MyString>(new MyString("123")),
+        MyUniquePTR<MyString>(new MyString("456")),
+        MyUniquePTR<MyString>(new MyString("789"))
+    }; //как проинициализировать???
+
+    for(auto& e : v){
+        std::cout << *e << " ";
+    }
+    std::cout << "\n";
+
+    std::list<MyUniquePTR<MyString>> l;
+    std::copy(std::move_iterator<decltype (v.begin())>(v.begin()),
+              std::move_iterator<decltype (v.end())>(v.end()),
+              std::back_inserter(l));
+    //как скопировать из v в l ???
+
 }
 
 
