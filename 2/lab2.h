@@ -182,6 +182,7 @@ template <class T>
 class MyUniquePTR
 {
 public:
+    MyUniquePTR() = default;
     MyUniquePTR(T *p){
         _data = p;
     }
@@ -189,21 +190,23 @@ public:
         _data = p->get();
         p->reset();
     }
+
     MyUniquePTR& operator=(MyUniquePTR&& other){
         if(_data == other._data){
             other.reset();
             return *this;
         }
-        if(other._data){
-            if(_data){
-                delete _data;
-            }
-            _data = other._data;
-            other.reset();
+
+        if(_data != nullptr){
+            delete _data;
         }
+
+        _data = other._data;
+        other.reset();
     }
+
     ~MyUniquePTR(){
-        if(_data){
+        if(_data != nullptr){
             delete _data;
         }
     }
@@ -213,7 +216,7 @@ public:
     }
 
     T& operator*(){
-        if(_data){
+        if(_data != nullptr){
             return *_data;
         }
         throw std::exception();
@@ -226,14 +229,14 @@ public:
     }
     void reset(T* p = nullptr){
         if(p){
-            if(_data){
+            if(_data != nullptr){
                 delete _data;
             }
             _data = p;
             return;
         }
 
-        if(_data){
+        if(_data != nullptr){
             delete _data;
             _data = nullptr;
         }

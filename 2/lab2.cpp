@@ -2,6 +2,7 @@
 #include <iostream>
 #include <list>
 #include <iterator>
+#include <memory>
 
 #include "lab2.h"
 int main()
@@ -111,26 +112,67 @@ initializer_list, move, forward, default, delete, move итераторы
     }
 
     ///TODO: рабочий перемещающий конструктор и = !!!
+    {
+        std::unique_ptr<std::string> stdP;
 
+        MyUniquePTR<std::string> p(new std::string("mystring"));
+        std::cout << "bool: " << (bool)p << "\n";
+        std::cout << "*p: " << *p << "\n";
+
+        //MyUniquePTR<std::string> p2(std::move(p));
+        MyUniquePTR<std::string> p3(MyUniquePTR<std::string>(new std::string("new_string")));
+        std::cout << "move constructor p3: " << *p3 << std::endl;
+
+        MyUniquePTR<std::string> p4;
+        p4 = std::move(p3);
+        //p4.operator=(std::move(p3));
+
+        std::cout << "move= p3: " << p3 << "\n";
+        std::cout << "move= p4: " << p4 << "\n";
+    }
+
+
+{
+        std::unique_ptr<std::string> p(new std::string("123"));
+        std::vector<std::unique_ptr<std::string>> v;
+        //{std::unique_ptr(new std::string("asdf")); };
+        //v.push_back(std::unique_ptr(new std::string("asdf")));
+        //v.push_back(std::make_unique<std::string>(new std::string("sdr")));
+        std::unique_ptr<std::string> tmp(new std::string("asdf"));
+        v.push_back(std::move(tmp));
+}
 
 
     MyUniquePTR< MyString > p2(new MyString ("vvv"));
     //p2 = p1; //и здесь компилятор должен выдавать ошибку
-    std::vector< MyUniquePTR< MyString >> v{
-        MyUniquePTR<MyString>(new MyString("123")),
-        MyUniquePTR<MyString>(new MyString("456")),
-        MyUniquePTR<MyString>(new MyString("789"))
-    }; //как проинициализировать???
 
-    for(auto& e : v){
-        std::cout << *e << " ";
-    }
+    std::vector< MyUniquePTR< MyString >> v(10);
+    //v.reserve(10);
+    //v.push_back(MyUniquePTR<MyString>(new MyString("123")));
+    MyUniquePTR<std::string> tmp(new std::string("123"));
+    //v.push_back(std::move(tmp));
+    //v.emplace_back(new MyString("sdf"));
+
+
+
+    //v.push_back(std::move(tmp));
+    //v.push_back( MyUniquePTR<MyString>(new MyString("123")) );
+    //v.emplace_back( new MyString("123") );
+//        MyUniquePTR<MyString>(new MyString("456")),
+//        MyUniquePTR<MyString>(new MyString("789"))
+//    }; //как проинициализировать???
+
+//    std::cout << "vector: ";
+//    for(auto& e : v){
+//        std::cout << *e << " ";
+//    }
     std::cout << "\n";
 
-    std::list<MyUniquePTR<MyString>> l;
-    std::copy(std::move_iterator<decltype (v.begin())>(v.begin()),
-              std::move_iterator<decltype (v.end())>(v.end()),
-              std::back_inserter(l));
+//    std::list<MyUniquePTR<MyString>> l;
+//    std::copy(std::move_iterator<decltype (v.begin())>(v.begin()),
+//              std::move_iterator<decltype (v.end())>(v.end()),
+//              std::back_inserter(l));
+
     //как скопировать из v в l ???
 
 }
