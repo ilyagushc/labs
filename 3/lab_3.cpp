@@ -80,6 +80,14 @@ int main()
 	//		  компилятор вычислит результат вызова рекурсивной функции на этапе компиляции)
 
 	{
+        std::cout << "----------------------- [3] ------------------------\n";
+        auto res = 1010_mybin;
+        std::cout << res << std::endl;
+        auto res2 = 1111_mybin;
+        std::cout << res2 << std::endl;
+
+        std::cout << "constlen: " << constlen("12345") << "\n";
+        std::cout << "constexpr bin: " << 100000000_constexpr_bin << std::endl;
 
         //__asm nop
 
@@ -93,7 +101,7 @@ int main()
 	//Подсказка: количество разрядов в байте определяет константа CHAR_BIT - <cstdint>
 
 	{
-		//std::string sBin= 256_toBinStr;
+        //std::string sBin= 256_toBinStr;
         //__asm nop
 	}
 
