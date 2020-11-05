@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string.h>
 #include <cmath>
+#include <algorithm>
 
 //---------------------------------------- [1] --------------------------------------------
 //---------------------------------------- [2] --------------------------------------------
@@ -27,6 +28,7 @@ uint32_t operator""_mybin(const char* s){
     }
     return res;
 }
+
 constexpr int constlen(const char* s, const int cnt = 0){
     if(*s == 0){
         return cnt;
@@ -43,3 +45,29 @@ constexpr uint32_t operator""_constexpr_bin(const char* s){
     //"100000000" -> в значение 256
     return binCalc(s, constlen(s)-1);
 }
+
+
+std::string operator""_toBinStr(const char* s){
+    std::cout << __PRETTY_FUNCTION__ << std::endl;
+    std::cout << "str: " << s << " len: " << strlen(s) << std::endl;
+    //get num from string
+    uint32_t res{0};
+    for(int i=0, n=strlen(s); i<n; i++){
+        res += (s[i]-'0') * pow(10, n-i-1);
+    }
+    std::cout << "res: " << res << std::endl;
+    //get bin string from num
+    std::string resStr;
+    uint32_t cur = res;
+    while(1){
+        resStr += (std::fmod(cur, 2) + '0');
+        cur/=2;
+        if(cur == 1){
+            resStr += '1';
+            break;
+        }
+    }
+    std::reverse(resStr.begin(), resStr.end());
+    return resStr;
+}
+

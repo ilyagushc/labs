@@ -101,7 +101,8 @@ int main()
 	//Подсказка: количество разрядов в байте определяет константа CHAR_BIT - <cstdint>
 
 	{
-        //std::string sBin= 256_toBinStr;
+        std::string sBin= 256_toBinStr;
+        std::cout << "sBin: " << sBin << std::endl;
         //__asm nop
 	}
 
