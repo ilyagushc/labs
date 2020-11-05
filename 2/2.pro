@@ -20,3 +20,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 # Input
 SOURCES += lab2.cpp
+
+HEADERS += \
+    lab2.h
