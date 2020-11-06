@@ -68,6 +68,9 @@ T stringToEnum(const std::string& s)
         return m[s];
     }
     throw StringToEnumException();
+
+    //лучше так:
+    return m.at(s);
 }
 
 template<class T>

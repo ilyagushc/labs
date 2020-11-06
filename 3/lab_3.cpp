@@ -6,6 +6,8 @@
 #include <iterator>
 #include <memory>
 #include <vector>
+#include <functional>
+#include <list>
 
 #include "lab_3.h"
 
@@ -131,6 +133,10 @@ int main()
         int arr1[max];
         int arr2[test];
 
+        std::cout << "min: " << min << std::endl;
+        std::cout << "max: " << max << std::endl;
+        std::cout << "test(100): " << test << std::endl;
+
     //__asm nop
 	}	
 
@@ -142,10 +148,12 @@ int main()
 		//5.а - обеспечьте корректное выполнение фрагмента
 		{
 			std::vector<std::string*> v = { new std::string("aa"), new std::string("bb"), new std::string("cc") };
+
+            //Распечатайте все строки
             for(const auto& i : v){
                 std::cout << *i << " ";
             }
-			//Распечатайте все строки
+            std::cout << "\n";
 		
             //__asm nop
 			//???
@@ -160,7 +168,24 @@ int main()
 		 //
 			
 		{
-		 //Распечатайте все строки
+            std::vector<std::unique_ptr<std::string>> v;
+            v.emplace_back(new std::string("aa"));
+            v.push_back(make_unique<std::string>("bb"));
+            v.push_back(std::unique_ptr<std::string>(new std::string("cc")));
+
+            //Распечатайте все строки
+            std::cout << "std::vector<std::unique_ptr<std::string>>: \n";
+            for(const auto& i : v){
+                std::cout << *i << " ";
+            }
+            std::cout << std::endl;
+
+            v[1] = std::unique_ptr<std::string>(new std::string("123"));
+            std::cout << "std::vector<std::unique_ptr<std::string>>: edited\n";
+            for(const auto& i : v){
+                std::cout << *i << " ";
+            }
+            std::cout << std::endl;
 
             //__asm nop
 		 //??? Уничтожение динамически созданных объектов?
@@ -168,9 +193,20 @@ int main()
 
 		{//5.c - дополните задание 5.b добавьте возможность изменять хранящиеся строки
 		 //следующим образом (например, добавить указанный суффикс: "AAA" -> "AAA_1")  
-		
+            std::vector<std::unique_ptr<std::string>> v;
+            v.emplace_back(new std::string("aa"));
+            v.push_back(make_unique<std::string>("bb"));
+            v.push_back(std::unique_ptr<std::string>(new std::string("cc")));
 
-	
+            std::cout << "std::vector<std::unique_ptr<std::string>>: suffix\n";
+
+            v[1] = std::unique_ptr<std::string>(new std::string(*v[1] + "_1"));
+            for( auto& i : v){
+                std::cout << *i << " ";
+                *i += "lll";
+            }
+            std::cout << std::endl;
+
             //__asm nop
 		}
 
@@ -180,6 +216,22 @@ int main()
 		 //с элементами std::string
 		 //С помощью unique_ptr::operator[] заполните обернутый массив значениями
 		 //Когда происходит освобождения памяти?
+
+
+            const int n = 10;
+            std::unique_ptr<std::string[], std::function<void(std::string[])>> p(new std::string[n],
+                    [](std::string data[]){ if(data != nullptr){delete[] data;}});
+
+
+            for(int i=0; i<n; i++){
+                p[i] = std::string(std::to_string(i));
+            }
+
+            std::cout << "std::unique_ptr<std::string[]>: ";
+            for(int i=0; i<n; i++){
+                std::cout << p[i] << " ";
+            }
+            std::cout << std::endl;
 
             //__asm nop
 		}
@@ -191,7 +243,28 @@ int main()
 		 //освобождения памяти
 
 			std::string* arStrPtr[] = { new std::string("aa"), new std::string("bb"), new std::string("cc") };
+            int n = sizeof(arStrPtr);
 
+            std::cout << "std::unique_ptr<std::string*[], std::function<void(std::string*[])>>: \n";
+            std::cout << "n: " << n << std::endl;
+
+
+            if(0){
+
+                //пока не работает - вылетает
+
+                std::unique_ptr<std::string*[], std::function<void(std::string*[])>> p(arStrPtr,
+                  [n](std::string* data[]){
+                    for(int i=0; i<n; i++){
+                        //delete data[i];
+                    }
+                });
+
+                for(int i=0; i<n; i++){
+                    std::cout << *p[i] << " ";
+                }
+                std::cout << std::endl;
+            }
             //__asm nop
 		}
 
@@ -199,6 +272,27 @@ int main()
 			//Посредством алгоритмя copy() скопируйте элементы вектора в пустой список с элементами 
 			//того же типа
 			//Подсказка: перемещающие итераторы и шаблон std::make_move_iterator
+
+            std::vector<std::unique_ptr<std::string>> v;
+            v.push_back(std::unique_ptr<std::string>(new std::string("123")));
+            v.push_back(std::unique_ptr<std::string>(new std::string("456")));
+            v.push_back(std::unique_ptr<std::string>(new std::string("789")));
+
+            std::list<std::unique_ptr<std::string>> l;
+
+            typedef  std::vector<std::unique_ptr<std::string>>::iterator vit;
+            typedef  std::list<std::unique_ptr<std::string>>::iterator lit;
+            std::copy(std::move_iterator<vit>(std::begin(v)),
+                      std::move_iterator<vit>(std::end(v)),
+                      std::inserter(l, std::begin(l)));
+
+
+            std::cout << "move_iterator: \n";
+            for(const auto& i : l){
+                std::cout << *i << " ";
+            }
+            std::cout << "\n";
+
 
             //__asm nop
 

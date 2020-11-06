@@ -22,7 +22,7 @@ uint32_t operator""_mybin(const char* s){
     for(int i=0, n=strlen(s); i<n; i++){
         bool curBit = (s[n-1-i] - '0');
         if(curBit){
-            res +=  std::pow(2, i);
+            res +=  std::pow(2, i); // << i
         }
         //std::cout << "i: " << i << " curBit: " << curBit << " 2^i: " << std::pow(2, i) << " res: " << res << std::endl;
     }
