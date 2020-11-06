@@ -1,9 +1,13 @@
+#include "lab_4.h"
+
 #include <iostream>
 #include <memory>
 #include <vector>
 #include <set>
 #include <algorithm>
 #include <string>
+#include <list>
+#include <memory>
 
 
 
@@ -19,18 +23,40 @@ int main()
 	Подсказки: if constexpr
 	*/
 	{
+        std::cout << "----------------------------- [1] ----------------------------------\n";
+
+
+        std::vector <std::string> v{"123", "456", "asd"};
+        print(v);
+        std::list <std::string*> l{new std::string("123"), new std::string("asd")};
+        print(l);
+        std::deque <std::shared_ptr<std::string>> d{std::make_shared<std::string>("123"), std::make_shared<std::string>("321")};
+        print(d);
 
 	}
 
 /***************************************************************/
 //Задание 2.
 	/* Реализуйте шаблон функции сложения двух значений.
-	Если первое слагаемое является вектором, то все элементы вектора нужно увеличить на значение второго параметра. При этом элементы вектора и второй параметр должны быть одного и того же типа.
+    Если первое слагаемое является вектором, то все элементы вектора нужно увеличить на значение второго параметра.
+    При этом элементы вектора и второй параметр должны быть одного и того же типа.
 	Подсказки: if constexpr, is_same
 	*/
 	{
+        std::cout << "----------------------------- [2] ----------------------------------\n";
+        std::vector<int> vi{1, 2, 3};
+        std::vector<double> vd{1, 2, 3};
+        int elem{10};
+        sum2elem(vi, elem);
+        print(vi);
+        sum2elem(vd, elem);
+        print(vd);
 
-	}
+        std::vector<std::string> vs{"123", "123", "123"};
+        std::string s("add");
+        sum2elem(vs, s);
+        print(vs);
+    }
 
 
 	/***************************************************************/
