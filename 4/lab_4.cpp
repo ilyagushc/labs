@@ -8,7 +8,9 @@
 #include <string>
 #include <list>
 #include <memory>
-
+#include <stack>
+#include <queue>
+//#include <priority_queue>
 
 
 int main()
@@ -66,8 +68,26 @@ int main()
 	Предусмотрите вывод значений, если в адаптере хранятся указатели.
 	*/
 	{
+        std::stack <int> s;
+        for(auto i : {1, 2, 3, 4, 5}){
+            s.push(i);
+        }
+        std::queue <int> q;
+        for(auto i : {1, 2, 3, 4, 5}){
+            q.push(i);
+        }
+        std::priority_queue <int> p;
+        for(auto i : {1, 2, 3, 4, 5}){
+            p.push(i);
+        }
 
-	}
+
+        std::priority_queue <int>::value_type tmp;
+
+        printAdapt(s);
+        printAdapt(q);
+        printAdapt(p);
+    }
 
 /***************************************************************/
 //Задание 4.

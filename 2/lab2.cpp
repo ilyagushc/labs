@@ -112,24 +112,24 @@ initializer_list, move, forward, default, delete, move итераторы
     }
 
     ///TODO: рабочий перемещающий конструктор и = !!!
-    {
-        std::unique_ptr<std::string> stdP;
+//    {
+//        std::unique_ptr<std::string> stdP;
 
-        MyUniquePTR<std::string> p(new std::string("mystring"));
-        std::cout << "bool: " << (bool)p << "\n";
-        std::cout << "*p: " << *p << "\n";
+//        MyUniquePTR<std::string> p(new std::string("mystring"));
+//        std::cout << "bool: " << (bool)p << "\n";
+//        std::cout << "*p: " << *p << "\n";
 
-        //MyUniquePTR<std::string> p2(std::move(p));
-        MyUniquePTR<std::string> p3(MyUniquePTR<std::string>(new std::string("new_string")));
-        std::cout << "move constructor p3: " << *p3 << std::endl;
+//        //MyUniquePTR<std::string> p2(std::move(p));
+//        MyUniquePTR<std::string> p3(MyUniquePTR<std::string>(new std::string("new_string")));
+//        std::cout << "move constructor p3: " << *p3 << std::endl;
 
-        MyUniquePTR<std::string> p4;
-        p4 = std::move(p3);
-        //p4.operator=(std::move(p3));
+//        MyUniquePTR<std::string> p4;
+//        p4 = std::move(p3);
+//        //p4.operator=(std::move(p3));
 
-        std::cout << "move= p3: " << p3 << "\n";
-        std::cout << "move= p4: " << p4 << "\n";
-    }
+//        std::cout << "move= p3: " << p3 << "\n";
+//        std::cout << "move= p4: " << p4 << "\n";
+//    }
 
 
 {

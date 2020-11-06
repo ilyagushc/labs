@@ -122,6 +122,14 @@ int main()
 	//				Для проверки достаточно создать встроенный массив с размерностью, вычисляемой
 	//				посредством constexpr-метода:
 	{
+        std::cout << "----------------------- [4] ------------------------\n";
+        constexpr MinMax<int> mm{-10, 10};
+        constexpr int min = mm.getMin();
+        constexpr int max = mm.getMax();
+        constexpr int test = mm.get(100);
+
+        int arr1[max];
+        int arr2[test];
 
     //__asm nop
 	}	
@@ -129,10 +137,14 @@ int main()
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//Задание 5. unique_ptr
 	{
+        std::cout << "----------------------- [5] ------------------------\n";
 
 		//5.а - обеспечьте корректное выполнение фрагмента
 		{
 			std::vector<std::string*> v = { new std::string("aa"), new std::string("bb"), new std::string("cc") };
+            for(const auto& i : v){
+                std::cout << *i << " ";
+            }
 			//Распечатайте все строки
 		
             //__asm nop

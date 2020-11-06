@@ -46,6 +46,7 @@ constexpr uint32_t operator""_constexpr_bin(const char* s){
     return binCalc(s, constlen(s)-1);
 }
 
+//---------------------------------------- [3] --------------------------------------------
 
 std::string operator""_toBinStr(const char* s){
     std::cout << __PRETTY_FUNCTION__ << std::endl;
@@ -70,4 +71,49 @@ std::string operator""_toBinStr(const char* s){
     std::reverse(resStr.begin(), resStr.end());
     return resStr;
 }
+//---------------------------------------- [4] --------------------------------------------
+
+
+template <class T>
+class MinMax{
+public:
+    MinMax(){}
+    constexpr MinMax(const T& min, const T& max) : _min(min), _max(max){}
+
+    void setMin(const T& min){
+        _min = min;
+    }
+
+    constexpr T getMin()const{
+        return _min;
+    }
+
+    void setMax(const T& max){
+        _max = max;
+    }
+
+    constexpr T getMax()const{
+        return _max;
+    }
+
+    constexpr T get(const T& val) const{
+        if(val > _max){
+            return _max;
+        }
+        if(val < _min){
+            return _min;
+        }
+        return val;
+    }
+
+
+private:
+
+    T _min{};
+    T _max{};
+
+};
+
+
+
 
