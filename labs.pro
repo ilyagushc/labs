@@ -2,7 +2,7 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 SUBDIRS = \
-1\
+#1\
 2\
-3\
+#3\
 4\

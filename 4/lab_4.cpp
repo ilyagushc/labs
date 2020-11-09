@@ -68,6 +68,8 @@ int main()
 	Предусмотрите вывод значений, если в адаптере хранятся указатели.
 	*/
 	{
+        std::cout << "----------------------------- [3] ----------------------------------\n";
+
         std::stack <int> s;
         for(auto i : {1, 2, 3, 4, 5}){
             s.push(i);
@@ -82,8 +84,6 @@ int main()
         }
 
 
-        std::priority_queue <int>::value_type tmp;
-
         printAdapt(s);
         printAdapt(q);
         printAdapt(p);
@@ -92,13 +92,37 @@ int main()
 /***************************************************************/
 //Задание 4.
 	{
-		//Дан массив элементов типа string
-		std::string strings[] = {"abc", "123", "qwerty", "#$%"};
+        std::cout << "----------------------------- [4] ----------------------------------\n";
+        //Дан массив элементов типа string
+        std::shared_ptr<std::string> strings[] = {std::shared_ptr<std::string>(new std::string("abc")),
+                                                  std::shared_ptr<std::string>(new std::string("123")),
+                                                  std::shared_ptr<std::string>(new std::string("qwerty")),
+                                                  std::shared_ptr<std::string>(new std::string("#$%"))};
+
 		//До завершения фрагмента строки должны существовать в единственном экземпляре.
 		//Требуется обеспечить манипулирование строками а) без копирования и б) без изменения порядка
 		//элементов в массиве!
 		
 		//В std::set "складываем" по алфавиту обертки для строк, которые содержат только буквы 
+        std::set<std::shared_ptr<std::string>> set;
+        for(const auto& s : strings){
+            std::string res;
+
+            bool ok{false};
+            for(const auto e : *s.get()){
+                if((e >= 'a' && e <= 'z') || (e >= 'A' && e <= 'Z')){
+                    ok = true;
+                }
+                else{
+                    ok = false;
+                    break;
+                }
+            }
+            if(ok){
+                set.emplace(s);
+            }
+
+        }
 		
 
         //__asm nop
@@ -108,12 +132,65 @@ int main()
 		//Выводим на экран
 		//Находим сумму
 		
-		//std::vector<std::shared_ptr < std::string>>
+        std::vector<std::shared_ptr < std::string>> vec;
+        for(const auto& s : strings){
+            std::string res;
+
+            bool ok{false};
+            for(const auto e : *s.get()){
+                if(e >= '0' && e <= '9'){
+                    ok = true;
+                }
+                else{
+                    ok = false;
+                    break;
+                }
+            }
+            if(ok){
+                vec.push_back(s);
+            }
+
+        }
+
 
 		/******************************************************************************************/
 		//сюда "складываем" обертки для строк, которые не содержат ни символов букв, ни символов цифр
 		//и просто выводим
+        std::set<std::shared_ptr<std::string>> vec2;
+        for(const auto& s : strings){
+            std::string res;
 
+            bool ok{false};
+            for(const auto e : *s.get()){
+                if((e >= 'a' && e <= 'z') || (e >= 'A' && e <= 'Z') || (e >='0' && e <='9')){
+                    ok = false;
+                    break;
+                }
+                else{
+                    ok = true;
+                }
+            }
+            if(ok){
+                vec2.emplace(s);
+            }
+        }
+        std::cout << "set: \n";
+        for(const auto& i : set){
+            std::cout << *i << " ";
+        }
+        std::cout << "\n";
+
+        std::cout << "vec: \n";
+        for(const auto& i : vec){
+            std::cout << *i << " ";
+        }
+        std::cout << "\n";
+
+        std::cout << "vec2: \n";
+        for(const auto& i : vec2){
+            std::cout << *i << " ";
+        }
+        std::cout << "\n";
 
 	}
 

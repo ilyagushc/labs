@@ -46,24 +46,18 @@ void sum2elem(T1& e1, const T2& e2){
 
 //stack, queue, priority_queue
 template <class T>
-void printAdapt(const T& c){
+void printAdapt(T c){
     T tmp = c;
-//    T::value_type var;
 
-//    for(int i=0, n=c.size(); i<n; i++){
-//        std::cout << tmp.pop() << " ";
-//    }
-//    std::cout << "\n";
-
-//    decltype(auto) first = c.pop();
-//    if constexpr(std::is_same<T, std::stack< T::value_type>>::value){
-//        std::cout << "stack!\n";
-//    }
-//    if constexpr(std::is_same<T, std::queue<decltype (*std::begin(c))>>::value){
-//        std::cout << "queue!\n";
-//    }
-//    if constexpr(std::is_same<T, std::priority_queue<decltype (*std::begin(c))>>::value){
-//        std::cout << "priority_queue!\n";
-//    }
+    while(tmp.size()){
+        if constexpr ( std::is_same< std::queue<typename T::value_type>, T >::value ){
+            std::cout << tmp.front() << " ";
+        }
+        if constexpr ( std::is_same< std::stack<typename T::value_type>, T >::value  || std::is_same< std::priority_queue<typename T::value_type>, T >::value ){
+            std::cout << tmp.top() << " ";
+        }
+        tmp.pop();
+    }
+    std::cout << "\n";
 }
 //---------------------------- [4] ----------------------------------
