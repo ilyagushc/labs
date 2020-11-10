@@ -7,19 +7,13 @@
 #include <iostream>
 #include <stack>
 #include <queue>
-
+#include <utility>
 
 //---------------------------- [1] ----------------------------------
 
 template <class T>
 void print(const T& c){
-    if(!std::size(c)){
-        return;
-    }
-
-    //remove reference
-    auto e = *std::begin(c);
-    if constexpr(std::is_pointer<decltype (e)>::value){
+    if constexpr(std::is_pointer<typename T::value_type>::value){
         for(const auto&  i : c){
             std::cout << *i << ", ";
         }
@@ -60,4 +54,11 @@ void printAdapt(T c){
     }
     std::cout << "\n";
 }
-//---------------------------- [4] ----------------------------------
+//---------------------------- [6] ----------------------------------
+template<typename T, size_t size>
+class MyArray
+{
+    T ar[size]; //как обеспечить инициализацию элементов базового типа по умолчанию нулем?
+    //…
+};
+

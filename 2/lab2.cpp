@@ -95,7 +95,7 @@ initializer_list, move, forward, default, delete, move итераторы
     std::cout << p1->c_str() << std::endl;
 
     //p1->SetNewString(“qwerty”);
-    *p1 = std::string("qwerty");
+    *p1 = std::string("qwerty"); // вызывается move
     std::cout << *p1 << "\n";
 
     MyString  s2 = *p1;

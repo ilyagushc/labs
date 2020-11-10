@@ -3,6 +3,6 @@ CONFIG += ordered
 
 SUBDIRS = \
 #1\
-2\
+#2\
 #3\
 4\

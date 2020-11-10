@@ -94,22 +94,50 @@ int main()
 	{
         std::cout << "----------------------------- [4] ----------------------------------\n";
         //Дан массив элементов типа string
-        std::shared_ptr<std::string> strings[] = {std::shared_ptr<std::string>(new std::string("abc")),
-                                                  std::shared_ptr<std::string>(new std::string("123")),
-                                                  std::shared_ptr<std::string>(new std::string("qwerty")),
-                                                  std::shared_ptr<std::string>(new std::string("#$%"))};
+
+        std::string strings[] = {"abc", "123", "qwerty", "#$%"};
+
+        //test...
+//        std::vector<std::shared_ptr<std::string>> v;
+//        for(auto& i : strings){
+//            v.push_back(std::shared_ptr<std::string>( new std::string( std::move(i)) ));
+//        }
+
+//        std::cout << "strings: \n";
+//        for(const auto& i : strings){
+//            std::cout << i << " ";
+//        }
+//        std::cout << std::endl;
+
+//        std::cout << "vector: \n";
+//        for(const auto& i : v){
+//            std::cout << i << " ";
+//        }
+//        std::cout << std::endl;
+//        return 0;
+
+
+
+//        std::shared_ptr<std::string> strings[] = {std::shared_ptr<std::string>(new std::string("abc")),
+//                                                  std::shared_ptr<std::string>(new std::string("123")),
+//                                                  std::shared_ptr<std::string>(new std::string("qwerty")),
+//                                                  std::shared_ptr<std::string>(new std::string("#$%"))};
 
 		//До завершения фрагмента строки должны существовать в единственном экземпляре.
 		//Требуется обеспечить манипулирование строками а) без копирования и б) без изменения порядка
 		//элементов в массиве!
 		
 		//В std::set "складываем" по алфавиту обертки для строк, которые содержат только буквы 
+
+        ///TODO: move
+
+
         std::set<std::shared_ptr<std::string>> set;
         for(const auto& s : strings){
             std::string res;
 
             bool ok{false};
-            for(const auto e : *s.get()){
+            for(const auto e : s){
                 if((e >= 'a' && e <= 'z') || (e >= 'A' && e <= 'Z')){
                     ok = true;
                 }
@@ -119,7 +147,7 @@ int main()
                 }
             }
             if(ok){
-                set.emplace(s);
+                set.insert(std::shared_ptr<std::string>(new std::string(std::move(s))));
             }
 
         }
@@ -132,22 +160,18 @@ int main()
 		//Выводим на экран
 		//Находим сумму
 		
-        std::vector<std::shared_ptr < std::string>> vec;
+        std::vector<std::shared_ptr<std::string>> vec;
         for(const auto& s : strings){
-            std::string res;
 
-            bool ok{false};
-            for(const auto e : *s.get()){
-                if(e >= '0' && e <= '9'){
-                    ok = true;
-                }
-                else{
+            bool ok{true};
+            for(const auto e : s){
+                if(!(e >= '0' && e <= '9')){
                     ok = false;
                     break;
                 }
             }
             if(ok){
-                vec.push_back(s);
+                vec.push_back(std::shared_ptr<std::string>(new std::string(std::move(s))));
             }
 
         }
@@ -156,12 +180,13 @@ int main()
 		/******************************************************************************************/
 		//сюда "складываем" обертки для строк, которые не содержат ни символов букв, ни символов цифр
 		//и просто выводим
-        std::set<std::shared_ptr<std::string>> vec2;
+
+        std::vector<std::shared_ptr<std::string>> vec2;
+
         for(const auto& s : strings){
-            std::string res;
 
             bool ok{false};
-            for(const auto e : *s.get()){
+            for(const auto e : s){
                 if((e >= 'a' && e <= 'z') || (e >= 'A' && e <= 'Z') || (e >='0' && e <='9')){
                     ok = false;
                     break;
@@ -171,7 +196,7 @@ int main()
                 }
             }
             if(ok){
-                vec2.emplace(s);
+                vec2.push_back(std::shared_ptr<std::string>(new std::string(std::move(s))));
             }
         }
         std::cout << "set: \n";
@@ -198,14 +223,29 @@ int main()
 /******************************************************************************************/
 //Задание 5. 
 	{
-		//Дано:
-		std::string ar[] = {"my","Hello", "World"};
+        std::cout << "----------------------------- [5] ----------------------------------\n";
+        //Дано:
+        std::string ar[] = {"my", "Hello", "World"};
 		std::vector < std::shared_ptr<std::string>> v = {std::make_shared<std::string>("good"), std::make_shared<std::string>("bye")};
 		
 
 
 		//а) Требуется добавить в вектор обертки для элементов массива, НЕ копируя элементы массива! 
+
+        std::transform(std::begin(ar), std::end(ar), std::back_inserter(v), [](auto& e){
+            return std::shared_ptr<std::string>(new std::string(std::move(e)));
+        });
+
+
 		//б) Отсортировать вектор по алфавиту и вывести на экран
+        std::sort(v.begin(), v.end());
+
+        std::cout << "sorted: \n";
+        for(const auto& i : v){
+            std::cout << *i << " ";
+        }
+        std::cout << std::endl;
+
 		//в) Обеспечить корректное освобождение памяти
 
 
@@ -229,6 +269,8 @@ int main()
 		//Ввести возможность распечатать генеалогическое дерево для указанного индивидума
 
 	{
+        std::cout << "----------------------------- [6] ----------------------------------\n";
+
 		//История должна с кого-то начинаться => "Жили-были дед да баба, например, Адам и Ева"
 		//(то есть на самом деле два деда и две бабы):
 
@@ -262,16 +304,18 @@ template<typename T, size_t size> class MyArray
 	};
 
 */
-/*
+
 //Требуется обеспечить работоспособность приведенных примеров использования.
 	{
-		MyArray<int, 5> ar1;//MyArray<int,5>
-		MyArray ar2{"ABC"}; //MyArray<char,4>
-		int ar[] = { 1,2,3 };
-		MyArray ar3{ ar };
+        std::cout << "----------------------------- [6] ----------------------------------\n";
+
+//		MyArray<int, 5> ar1;//MyArray<int,5>
+//		MyArray ar2{"ABC"}; //MyArray<char,4>
+//		int ar[] = { 1,2,3 };
+//		MyArray ar3{ ar };
 
 	}
-*/
+
 
     //__asm nop
 
