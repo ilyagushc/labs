@@ -314,12 +314,15 @@ int main()
 	//в. Последний владелец указателя должен закрыть файл
 
 	//Подсказка: имитировать порядок записи можно с помощью функции rand()
-	/*
+
 	{
+        std::cout << "----------------------- [6] ------------------------\n";
 
 	//"писатели":
 	//Создать writer1, writer2
 
+        std::shared_ptr<FILE> writer1 = std::shared_ptr<FILE>(fopen("tmp.txt", "w"), [](FILE* f){fclose(f);});
+        std::shared_ptr<FILE> writer2 = writer1;
 
 	//например, источники данных:
 	char ar1[] = "Writer1";
@@ -329,11 +332,22 @@ int main()
 	//свою строчку
 	//Подсказка: строчки удобно записывать в файл посредством функции fputs()
 
+    int n=10;
+    for(int i=0; i<n; i++){
+        srand(time(0));
+        if(rand()%2){
+            std::fputs(ar1, writer1.get());
+        }
+        else{
+            std::fputs(ar2, writer2.get());
+        }
+    }
+
 
     //__asm nop
 	}//закрытие файла???
 
-	*/
+
 
 	
 }
