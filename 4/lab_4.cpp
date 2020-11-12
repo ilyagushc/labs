@@ -97,39 +97,12 @@ int main()
 
         std::string strings[] = {"abc", "123", "qwerty", "#$%"};
 
-        //test...
-//        std::vector<std::shared_ptr<std::string>> v;
-//        for(auto& i : strings){
-//            v.push_back(std::shared_ptr<std::string>( new std::string( std::move(i)) ));
-//        }
-
-//        std::cout << "strings: \n";
-//        for(const auto& i : strings){
-//            std::cout << i << " ";
-//        }
-//        std::cout << std::endl;
-
-//        std::cout << "vector: \n";
-//        for(const auto& i : v){
-//            std::cout << i << " ";
-//        }
-//        std::cout << std::endl;
-//        return 0;
-
-
-
-//        std::shared_ptr<std::string> strings[] = {std::shared_ptr<std::string>(new std::string("abc")),
-//                                                  std::shared_ptr<std::string>(new std::string("123")),
-//                                                  std::shared_ptr<std::string>(new std::string("qwerty")),
-//                                                  std::shared_ptr<std::string>(new std::string("#$%"))};
 
 		//До завершения фрагмента строки должны существовать в единственном экземпляре.
 		//Требуется обеспечить манипулирование строками а) без копирования и б) без изменения порядка
 		//элементов в массиве!
 		
 		//В std::set "складываем" по алфавиту обертки для строк, которые содержат только буквы 
-
-        ///TODO: move
 
 
         std::set<std::shared_ptr<std::string>> set;
@@ -199,6 +172,8 @@ int main()
                 vec2.push_back(std::shared_ptr<std::string>(new std::string(std::move(s))));
             }
         }
+
+
         std::cout << "set: \n";
         for(const auto& i : set){
             std::cout << *i << " ";
@@ -275,14 +250,19 @@ int main()
 		//(то есть на самом деле два деда и две бабы):
 
 
-		//std::shared_ptr<human> grandM1(new human("Eva"));
-		//...
+        std::shared_ptr<Human> grandM(new Human("Eva"));
+        std::shared_ptr<Human> grandF(new Human("Adam"));
+        //...
 
 		//у них появились дети - child():
-
+        auto f = child(grandM, grandF, "Ivan");
+        auto m = child(grandM, grandF, "Masha");
 
 		//а у детей в свою очередь свои дети:
+        auto c1 = child(m, f, "Vasya");
+        auto c2 = child(m, f, "Natasha");
 
+        grandF->print();
 
 		//...
         //__asm nop
@@ -307,10 +287,64 @@ template<typename T, size_t size> class MyArray
 
 //Требуется обеспечить работоспособность приведенных примеров использования.
 	{
-        std::cout << "----------------------------- [6] ----------------------------------\n";
+        std::cout << "----------------------------- [7] ----------------------------------\n";
 
-//		MyArray<int, 5> ar1;//MyArray<int,5>
-//		MyArray ar2{"ABC"}; //MyArray<char,4>
+
+#if 0
+
+        auto print0 = [](const auto& c){
+            for(const auto& e : c){
+                std::cout << c << " ";
+            }
+            std::cout << "\n";
+        };
+
+
+        MyArray ar1;//MyArray<int,5>
+
+        const int a[] = {1, 2, 3, 4};
+        int aa[10]{};
+        MyArray ar3(aa);
+        //std::cout << "ar3 size: " << std::size(ar3.ar) << "\n";
+
+
+        //MyArray ar4({1, 2, 3, 4});
+        //print0(ar4.ar);
+
+
+        MyArray ar2{"ABC"};//MyArray<char,4> ar2{"ABC"};
+
+        const char* s = "asdf";
+        int buf[100];
+        int buf1[] = {1, 2, 3};
+        std::cout << "sizeof: " << std::size(buf1) << "\n";
+
+        std::cout << " MyArray ar2{\"ABC\"} : \n";
+        //std::cout << " size: " << std::size(ar2.ar) << "\n";
+//        for(const auto i : ar2.ar){
+//            std::cout << char(i) << " ";
+//        }
+        std::cout << std::endl;
+
+#endif
+
+{
+        auto f = [](auto&& param){
+            mydbg;
+        };
+        int arr[10]{};
+        f(arr);
+
+        test(arr);
+        test0(arr);
+
+
+
+        MyArray arr0;
+
+}
+
+
 //		int ar[] = { 1,2,3 };
 //		MyArray ar3{ ar };
 
