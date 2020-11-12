@@ -8,6 +8,7 @@
 #include <set>
 #include <functional>
 
+#define mydbg std::cout << __PRETTY_FUNCTION__ << "\n"
 
 template <class T>
 void print(const T& c){
@@ -183,17 +184,21 @@ class MyUniquePTR
 {
 public:
     MyUniquePTR() = default;
+    MyUniquePTR(const MyUniquePTR& other) = delete;
+    MyUniquePTR operator=(const MyUniquePTR& other) = delete;
+
+
     MyUniquePTR(T *p){
         _data = p;
     }
-    MyUniquePTR(T&& p){
-        _data = p->get();
-        p->reset();
+    MyUniquePTR(MyUniquePTR&& p){
+        _data = p._data;
+        p._data = nullptr;
     }
 
     MyUniquePTR& operator=(MyUniquePTR&& other){
         if(_data == other._data){
-            other.reset();
+            other._data = nullptr;
             return *this;
         }
 
@@ -202,7 +207,7 @@ public:
         }
 
         _data = other._data;
-        other.reset();
+        other._data = nullptr;
     }
 
     ~MyUniquePTR(){
@@ -244,8 +249,6 @@ public:
 
 
 
-    MyUniquePTR(const MyUniquePTR& other) = delete;
-    MyUniquePTR operator=(const MyUniquePTR& other) = delete;
 
 private:
     T* _data{nullptr};
