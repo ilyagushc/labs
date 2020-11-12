@@ -23,7 +23,7 @@ initializer_list, move, forward, default, delete, move итераторы
 •	Реализуйте метод сортировки, который будет принимать в качестве параметра признак по возрастанию / по убыванию
 •	и другие (полезные на Ваш взгляд) методы	
 */
-
+{
     std::cout << "---------- [1] ----------\n";
 
     MyVec<int> v{-10, 2, -5, 4, 3, 5, 4, 9, -11, 15};
@@ -46,7 +46,7 @@ initializer_list, move, forward, default, delete, move итераторы
     std::cout << "sort: \n";
     v.sort([](const int& e1, const int& e2){return e1 < e2;});
     v.print();
-
+}
 
 //Задание 2. Реализуйте шаблонный класс, который является оберткой для очереди с элементами любого типа. 
 //Очередь требуется реализовать посредством динамического массива, при этом использовать массив как циклический буфер.
@@ -61,6 +61,7 @@ initializer_list, move, forward, default, delete, move итераторы
 //1.	Очередь реализуем без использования «сырой памяти»! А эффективность достигаем за счет использования move-семантики
 //2.	Очередь выводим на печать с помощью range-base-for
 //Тестируем разработанный класс на приведенном ниже фрагменте. Следующий фрагмент должен работать не только корректно, но и эффективно:
+{
     std::cout << "---------- [2] ----------\n";
 
 
@@ -81,17 +82,35 @@ initializer_list, move, forward, default, delete, move итераторы
 //    q1 = q3;
 //    q2 = MyQueue < MyString >  (5, MyString (“?”));
 //    q1 = { MyString(“bbb”), MyString (“ssss”)};
-
+}
 
 //Задание 3. Реализуйте шаблон класса MyUniquePTR, который является оберткой для указателя на объект любого типа.
 //Задача – класс должен обеспечивать единоличное владение динамически создаваемым объектом. Проверить функционирование шаблона на примере MyString:
 {
-    std::cout << "---------- [3] ----------\n";
+        std::cout << "---------- [3] ----------\n";
+        using MyString = std::string;
 
-    using MyString = std::string;
+//      ЗАДАНИЕ:
+//        MyUniquePTR<MyString> p1(new MyString (“abc”));
+//        std:: cout<<p1->GetString();
+//        p1->SetNewString(“qwerty”);
+//        MyString  s2 = *p1;
+//        //MyUniquePTR< MyString > p2=p1; //здесь компилятор должен выдавать ошибку =>
+//        Исправьте!
+//        If(p1) {std::cout<<”No object!”} //а это должно работать
+//        MyUniquePTR< MyString > p3(new MyString (“vvv”));
+//        //p3 = p2; //и здесь компилятор должен выдавать ошибку
+//        vector< MyUniquePTR< MyString >> v; //как проинициализировать???
+//        list< MyUniquePTR< MyString >> l;
+//        //как скопировать из v в l ???
+
+
+
+
+
+
 
     MyUniquePTR<MyString> p1(new MyString ("abc"));
-    //std::cout << p1->GetString();
     std::cout << p1->c_str() << std::endl;
 
     //p1->SetNewString(“qwerty”);
@@ -100,82 +119,65 @@ initializer_list, move, forward, default, delete, move итераторы
 
     MyString  s2 = *p1;
 
-    //error!!!
     //MyUniquePTR< MyString > p2=p1; //здесь компилятор должен выдавать ошибку =>
 
     //Исправьте!
-    if(p1) {
+    if(!p1)
         std::cout << "No object!\n";    //а это должно работать
-    }
-    else{
-        std::cout << "p1 not null object!\n";
-    }
+    else
+        std::cout << "p1: " << *p1 << "\n";
 
-    ///TODO: рабочий перемещающий конструктор и = !!!
-//    {
-//        std::unique_ptr<std::string> stdP;
+    //p3 = p2; //и здесь компилятор должен выдавать ошибку
+    std::vector< MyUniquePTR< MyString >> v;
+    //как проинициализировать???
+    v.push_back(MyUniquePTR<MyString>(new MyString("asdf")));
+    v.push_back(MyUniquePTR<MyString>(new MyString("1231")));
+    v.push_back(MyUniquePTR<MyString>(new MyString("AKHDG")));
 
-//        MyUniquePTR<std::string> p(new std::string("mystring"));
-//        std::cout << "bool: " << (bool)p << "\n";
-//        std::cout << "*p: " << *p << "\n";
-
-//        //MyUniquePTR<std::string> p2(std::move(p));
-//        MyUniquePTR<std::string> p3(MyUniquePTR<std::string>(new std::string("new_string")));
-//        std::cout << "move constructor p3: " << *p3 << std::endl;
-
-//        MyUniquePTR<std::string> p4;
-//        p4 = std::move(p3);
-//        //p4.operator=(std::move(p3));
-
-//        std::cout << "move= p3: " << p3 << "\n";
-//        std::cout << "move= p4: " << p4 << "\n";
-//    }
-
-
-{
-        std::unique_ptr<std::string> p(new std::string("123"));
-        std::vector<std::unique_ptr<std::string>> v;
-        //{std::unique_ptr(new std::string("asdf")); };
-        //v.push_back(std::unique_ptr(new std::string("asdf")));
-        //v.push_back(std::make_unique<std::string>(new std::string("sdr")));
-        std::unique_ptr<std::string> tmp(new std::string("asdf"));
-        v.push_back(std::move(tmp));
-}
-
-
-    MyUniquePTR< MyString > p2(new MyString ("vvv"));
-    //p2 = p1; //и здесь компилятор должен выдавать ошибку
-
-    std::vector< MyUniquePTR< MyString >> v(10);
-    //v.reserve(10);
-    //v.push_back(MyUniquePTR<MyString>(new MyString("123")));
-    MyUniquePTR<std::string> tmp(new std::string("123"));
-    //v.push_back(std::move(tmp));
-    //v.emplace_back(new MyString("sdf"));
-
-
-
-    //v.push_back(std::move(tmp));
-    //v.push_back( MyUniquePTR<MyString>(new MyString("123")) );
-    //v.emplace_back( new MyString("123") );
-//        MyUniquePTR<MyString>(new MyString("456")),
-//        MyUniquePTR<MyString>(new MyString("789"))
-//    }; //как проинициализировать???
-
-//    std::cout << "vector: ";
-//    for(auto& e : v){
-//        std::cout << *e << " ";
-//    }
-    std::cout << "\n";
-
-//    std::list<MyUniquePTR<MyString>> l;
-//    std::copy(std::move_iterator<decltype (v.begin())>(v.begin()),
-//              std::move_iterator<decltype (v.end())>(v.end()),
-//              std::back_inserter(l));
-
+    std::list< MyUniquePTR< MyString >> l;
     //как скопировать из v в l ???
+    //перемещение
+    std::copy(std::move_iterator(v.begin()), std::move_iterator(v.end()), std::back_inserter(l));
 
+    //или копирование
+    //std::transform(v.begin(), v.end(), std::back_inserter(l), [](auto& e){ return MyUniquePTR<MyString>(new MyString(*e));});
+
+    auto printUniqueCont = [](auto& c){
+        for(auto& i : c) {
+            if(i) std::cout << *i << " ";
+            else  std::cout << i << " ";
+        }
+        std::cout << "\n";
+    };
+    std::cout << "v: \n";
+    printUniqueCont(v);
+    std::cout << "l: \n";
+    printUniqueCont(l);
 }
+
+
+
+
+#if 0
+    {
+        std::cout << "test...\n";
+        std::unique_ptr<std::string> stdP;
+
+        MyUniquePTR<std::string> p(new std::string("mystring"));
+        std::cout << "bool: " << (bool)p << "\n";
+        std::cout << "*p: " << *p << "\n";
+
+
+        MyUniquePTR<std::string> p2(std::move(p));
+        std::cout << "move constructor p2: " << *p2 << " p: " << p << std::endl;
+
+        MyUniquePTR<std::string> p3;
+        p3 = std::move(p2);
+        std::cout << "move operator= p3: " << *p3 << " p2: " << p2 << std::endl;
+    }
+#endif
+
+
 
 
 	return 0;
