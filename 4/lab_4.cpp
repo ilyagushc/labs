@@ -13,6 +13,8 @@
 //#include <priority_queue>
 
 
+int Human::cnt = 0;
+
 int main()
 {
 	

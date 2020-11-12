@@ -61,26 +61,36 @@ void printAdapt(T c){
 class Human{
 public:
 
-    Human(const std::string& name) : _name(name){}
+    static int cnt;
+    Human(const std::string& name) : _name(name){
+        cnt++;
+        std::cout << "+" << cnt << std::endl;
+    }
+    ~Human(){
+        cnt--;
+        std::cout << "-" << cnt << std::endl;
+    }
 
     std::string _name;
     bool isLive{true};
 
 
-    std::shared_ptr<Human> _mother;
-    std::shared_ptr<Human> _father;
+    std::weak_ptr<Human> _mother;
+    std::weak_ptr<Human> _father;
 
     void print() const{
         std::cout << "me: " << _name;
-        if(_father) std::cout << " father: " << _father->_name;
-        if(_mother) std::cout << " mather: " << _mother->_name;
+        if(_father.use_count())
+            std::cout << " father: " << _father.lock()->_name;
+        if(_mother.use_count())
+            std::cout << " mather: " << _mother.lock()->_name;
         std::cout << "\n" << _name << " childs: \n";
         for(const auto& c : _childs){
-            c->print();
+            c.lock()->print();
         }
     }
 
-    std::list<std::shared_ptr<Human>> _childs;
+    std::list<std::weak_ptr<Human>> _childs;
 };
 
 std::shared_ptr<Human> child(std::shared_ptr<Human> m, std::shared_ptr<Human> f, const std::string& name){
