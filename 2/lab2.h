@@ -105,76 +105,144 @@ template <class T>
 class MyQueue{
 public:
     MyQueue(){
-        _data = new T[_n];
+        init();
+    }
+    ~MyQueue(){delete[] arr;}
+
+    MyQueue(std::initializer_list<T> list){
+        init(std::size(list));
+        for(const auto& i : list){
+            push(i);
+        }
     }
 
-    MyQueue(const std::initializer_list<T>& list){
-        _size = list.size();
-        if(_n < _size){
-            _n = _size;
+    MyQueue(int size, const T& e){
+        init(size);
+        for(int i=0; i<size; i++){
+            push(e);
         }
-        _data = new T[_n];
-        for(const auto& i : list){
-            push(*new T(i));
+    }
+
+    MyQueue(const MyQueue& other){
+        curSize = other.curSize;
+        arr = new T[curSize];
+        first = other.first;
+        last = other.last;
+        for(int i=0; i<curSize; i++){
+            arr[i] = other.arr[i];
         }
+    }
+
+    MyQueue(MyQueue&& other){
+        arr = other.arr;
+        curSize = other.curSize;
+        first = other.first;
+        last = other.last;
+
+        other.init();
+    }
+
+    MyQueue& operator=(const MyQueue& other){
+        curSize = other.curSize;
+        arr = new T[curSize];
+        first = other.first;
+        last = other.last;
+
+        for(int i=0; i<curSize; i++){
+            arr[i] = other.arr[i];
+        }
+        return *this;
+    }
+
+    MyQueue& operator=(MyQueue&& other){
+
+        delete[] arr;
+
+        arr = other.arr;
+        curSize = other.curSize;
+        first = other.first;
+        last = other.last;
+
+        other.init();
+    }
+
+
+
+    void init(int size = 0){
+        if(size){
+            curSize = size;
+        }
+        arr = new T[curSize];
+        first = 0;
+        last = 0;
+        cnt = 0;
     }
 
     void push(const T& e){
-        //кладем в конец
-        *_last = e;
-        _last++;
-        _size++;
+        arr[first] = e;
+        first++;
+        cnt++;
 
-        if(_last == _data + _n-1){
-            _last = _data;
-        }
-        if(_last == _first){
-            //догнали голову перераспределение памяти
-            int newN = _n*2;
-            T* newData = new T[newN];
-            T* cur = _first;
-            T* newCur = newData;
 
-            //копируем элементы
-            while(cur != _last){
-                newCur = cur;
-                cur++;
-                if(cur == _data+_n){
-                    cur = _data;
-                }
+        if(first == curSize){
+            //std::cout << "resize\n";
+            curSize *= 2;
+            T* newArr = new T[curSize];
+            for(int i = last; i < first; i++){
+                newArr[i] = arr[i];
             }
-
+            T* delArr = arr;
+            arr = newArr;
+            delete[] arr;
         }
     }
-
     T pop(){
-        if(_first == nullptr || _first == _last){
-            //нет элементов
-            return T();
+        if(!cnt){
+            return T{};
         }
-
-        //берем эелемент из начала
-        T res = *_first;
-
-        //двигаем указатель вперед
-        _first++;
-
-        //если пришли к концу - перешагиваем в начало
-        if(_first == _data + _n){
-            _first = _data;
-        }
-
-        return res;
+        cnt--;
+        int iRes = last;
+        last++;
+        return arr[iRes];
     }
+
+
+    void print(){
+        if(!cnt){
+            return;
+        }
+        for(int i=last; i<=first; i++){
+            std::cout << arr[i] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+
+    class iterator : public std::iterator<std::forward_iterator_tag, MyQueue>
+    {
+    public:
+        iterator(T* p) : data(p){}
+        iterator(const iterator& other){data = other.data;}
+        iterator& operator=(const iterator& other) {data = other.data; return *this;}
+        bool operator!=(iterator const& other) const {return data != other.data;}
+        bool operator==(iterator const& other) const {return data == other.data;}
+        T& operator*() const {return *data;}
+        iterator& operator++() {data++; return *this;}
+
+        T* data;
+    };
+
+    iterator begin(){return iterator(&arr[last]);}
+    iterator end(){return iterator(&arr[first]);}//указывает на элемент за последним в очереди
+
 
 private:
-    int _n{10};
-    int _size;
-    T* _data;
-    T* _first{nullptr};
-    T* _last{nullptr};
+    T *arr;
+    int first;
+    int last;
+    int curSize{2};
+    int cnt{0};
 };
-
 
 
 //----------------------------- [3] -----------------------------

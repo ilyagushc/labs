@@ -67,6 +67,7 @@ initializer_list, move, forward, default, delete, move итераторы
 
     using MyString = std::string;
 
+//ЗАДАНИЕ
     //MyQueue<MyString>  q1{ MyString(“AAA”), MyString (“qwerty”), MyString("asdf")};
     //использование MyQueue в диапазонном for:
 //    for (auto& el : q1)  {  std::cout << el << ' '; }
@@ -82,6 +83,40 @@ initializer_list, move, forward, default, delete, move итераторы
 //    q1 = q3;
 //    q2 = MyQueue < MyString >  (5, MyString (“?”));
 //    q1 = { MyString(“bbb”), MyString (“ssss”)};
+
+
+
+    MyQueue<MyString>  q1{ MyString("AAA"), MyString ("qwerty"), MyString("asdf")};
+    q1.print();
+
+    std::cout << "print with iterator: \n";
+
+    for(MyQueue<MyString>::iterator i = q1.begin(); i != q1.end(); ++i){
+        std::cout << *i << " ";
+    }
+    std::cout << "\n";
+
+
+
+    //использование MyQueue в диапазонном for:
+    std::cout << "использование MyQueue в диапазонном for: \n";
+    for (auto& el : q1)  {
+        std::cout << el << ' ';
+    }
+    std::cout << std::endl;
+    MyString s("abc");
+    q1.push(s);
+    q1.push(MyString("123"));
+    MyString s1 = q1.pop();
+    q1.push("qqq");
+    MyQueue<MyString>  q2 = q1;
+    MyQueue<MyString>  q22 = std::move(q1);
+
+    MyQueue<MyString>  q3{10, MyString ("!")}; //очередь должна содержать 10 элементов со строкой «!»
+    q1 = q3;
+    q2 = MyQueue<MyString>(5, MyString ("?"));
+    q1 = { MyString("bbb"), MyString ("ssss")};
+
 }
 
 //Задание 3. Реализуйте шаблон класса MyUniquePTR, который является оберткой для указателя на объект любого типа.
