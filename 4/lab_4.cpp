@@ -284,6 +284,10 @@ template<typename T, size_t size> class MyArray
 		T ar[size]; //как обеспечить инициализацию элементов базового типа по умолчанию нулем?
 		…
 	};
+        MyArray<int, 5> ar1;//MyArray<int,5>
+        MyArray ar2{"ABC"}; //MyArray<char,4>
+        int ar[] = { 1,2,3 };
+        MyArray ar3{ ar };
 
 */
 
@@ -292,63 +296,16 @@ template<typename T, size_t size> class MyArray
         std::cout << "----------------------------- [7] ----------------------------------\n";
 
 
-#if 0
 
-        auto print0 = [](const auto& c){
-            for(const auto& e : c){
-                std::cout << c << " ";
-            }
-            std::cout << "\n";
-        };
+        MyArray<int, 5> ar1;//MyArray<int,5>
+        print0(ar1.ar);
 
+        MyArray ar2{"ABC"}; //MyArray<char,4>
+        print0(ar2.ar);
 
-        MyArray ar1;//MyArray<int,5>
-
-        const int a[] = {1, 2, 3, 4};
-        int aa[10]{};
-        MyArray ar3(aa);
-        //std::cout << "ar3 size: " << std::size(ar3.ar) << "\n";
-
-
-        //MyArray ar4({1, 2, 3, 4});
-        //print0(ar4.ar);
-
-
-        MyArray ar2{"ABC"};//MyArray<char,4> ar2{"ABC"};
-
-        const char* s = "asdf";
-        int buf[100];
-        int buf1[] = {1, 2, 3};
-        std::cout << "sizeof: " << std::size(buf1) << "\n";
-
-        std::cout << " MyArray ar2{\"ABC\"} : \n";
-        //std::cout << " size: " << std::size(ar2.ar) << "\n";
-//        for(const auto i : ar2.ar){
-//            std::cout << char(i) << " ";
-//        }
-        std::cout << std::endl;
-
-#endif
-
-{
-        auto f = [](auto&& param){
-            mydbg;
-        };
-        int arr[10]{};
-        f(arr);
-
-        test(arr);
-        test0(arr);
-
-
-
-        MyArray arr0;
-
-}
-
-
-//		int ar[] = { 1,2,3 };
-//		MyArray ar3{ ar };
+        int ar[] = { 1,2,3 };
+        MyArray ar3{ ar };
+        print0(ar3.ar);
 
 	}
 

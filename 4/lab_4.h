@@ -123,43 +123,27 @@ class MyArray
 public:
 
     MyArray() = default;
-    MyArray(T&& a)
-    {
+    MyArray(T* data){
+
         mydbg;
-//        for(int i=0; i<size; i++){
-//            ar[i] = a[i];
-//        }
+
+        for(int i=0; i<size; i++){
+            ar[i] = data[i];
+        }
     }
 
     T ar[size]{}; //как обеспечить инициализацию элементов базового типа по умолчанию нулем?
-
 };
 
-MyArray() -> MyArray<int, 0>;
-//size(const _Tp (&/*__array*/)[_Nm]) noexcept
 
-MyArray(const char* s) -> MyArray<char, sizeof(s)>;
-
-template <class T>
-MyArray(T&& a) -> MyArray<T, sizeof(a)>;
-
-
-//template<class T>
-//MyArray(const std::initializer_list<T>& list) -> MyArray<T, 15>;
-//MyArray(T ) - > MyArray<T, sizeof(T)>;
+template <class T, size_t num>
+MyArray(const T(&a)[num]) -> MyArray<T, num>;
 
 
 
-template <class T>
-void test(T&& a){
-    mydbg;
-    std::cout << "sizeof(a): " << sizeof(a) << "\n";
-    std::cout << "len(a): " << sizeof(a)/sizeof(*std::begin(a)) << "\n";
-}
-
-void test0(int (&a)[10]){
-    mydbg;
-//    //std::cout << "sizeof(a): " << sizeof(a) << "\n";
-//    //std::cout << "len(a): " << sizeof(a)/sizeof(*std::begin(a)) << "\n";
-}
-
+auto print0 = [](const auto& c){
+    for(int i=0; i<sizeof(c) / sizeof(c[0]); i++){
+        std::cout << c[i] << " ";
+    }
+    std::cout << "\n";
+};

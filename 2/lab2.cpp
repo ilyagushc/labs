@@ -141,10 +141,6 @@ initializer_list, move, forward, default, delete, move итераторы
 
 
 
-
-
-
-
     MyUniquePTR<MyString> p1(new MyString ("abc"));
     std::cout << p1->c_str() << std::endl;
 
