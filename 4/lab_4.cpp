@@ -34,6 +34,10 @@ int main()
         print(v);
         std::list <std::string*> l{new std::string("123"), new std::string("asd")};
         print(l);
+
+        for(auto & i : l)
+            delete i;
+
         std::deque <std::shared_ptr<std::string>> d{std::make_shared<std::string>("123"), std::make_shared<std::string>("321")};
         print(d);
 
