@@ -86,12 +86,12 @@ initializer_list, move, forward, default, delete, move итераторы
 
 
 
-    MyQueue<MyString>  q1{ MyString("AAA"), MyString ("qwerty"), MyString("asdf")};
+    MyQueue0<MyString>  q1{ MyString("AAA"), MyString ("qwerty"), MyString("asdf")};
     q1.print();
 
     std::cout << "print with iterator: \n";
 
-    for(MyQueue<MyString>::iterator i = q1.begin(); i != q1.end(); ++i){
+    for(MyQueue0<MyString>::iterator i = q1.begin(); i != q1.end(); ++i){
         std::cout << *i << " ";
     }
     std::cout << "\n";
@@ -109,12 +109,12 @@ initializer_list, move, forward, default, delete, move итераторы
     q1.push(MyString("123"));
     MyString s1 = q1.pop();
     q1.push("qqq");
-    MyQueue<MyString>  q2 = q1;
-    MyQueue<MyString>  q22 = std::move(q1);
+    MyQueue0<MyString>  q2 = q1;
+    MyQueue0<MyString>  q22 = std::move(q1);
 
-    MyQueue<MyString>  q3{10, MyString ("!")}; //очередь должна содержать 10 элементов со строкой «!»
+    MyQueue0<MyString>  q3{10, MyString ("!")}; //очередь должна содержать 10 элементов со строкой «!»
     q1 = q3;
-    q2 = MyQueue<MyString>(5, MyString ("?"));
+    q2 = MyQueue0<MyString>(5, MyString ("?"));
     q1 = { MyString("bbb"), MyString ("ssss")};
 
 }
