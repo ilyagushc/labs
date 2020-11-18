@@ -8,6 +8,7 @@
 #include <vector>
 #include <functional>
 #include <list>
+#include <ctime>
 
 #include "lab_3.h"
 
@@ -333,8 +334,8 @@ int main()
 	//Подсказка: строчки удобно записывать в файл посредством функции fputs()
 
     int n=10;
+    srand(time(0));
     for(int i=0; i<n; i++){
-        srand(time(0));
         if(rand()%2){
             std::fputs(ar1, writer1.get());
         }
